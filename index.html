@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>My Task Manager</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header class="app-header">
+			<div class="container">
+				<h1 class="app-title">My Task Manager</h1>
+			</div>
+		</header>
+
+		<main class="container" id="main">
+			<section class="panel panel-create" aria-labelledby="create-heading">
+				<h2 id="create-heading">Add a task</h2>
+				<form class="task-form" aria-describedby="create-desc">
+					<p id="create-desc" class="sr-only">Provide a title and optional details, then add the task.</p>
+					<div class="form-row">
+						<label for="title">Title</label>
+						<input id="title" name="title" type="text" placeholder="e.g. Finish monthly report" required />
+					</div>
+
+					<div class="form-row">
+						<label for="description">Description</label>
+						<textarea id="description" name="description" rows="2" placeholder="Add details (optional)"></textarea>
+					</div>
+
+					<div class="form-grid">
+						<div class="form-row">
+							<label for="due">Due</label>
+							<input id="due" name="due" type="date" />
+						</div>
+
+						<div class="form-row">
+							<label for="priority">Priority</label>
+							<select id="priority" name="priority">
+								<option value="low">Low</option>
+								<option value="medium" selected>Medium</option>
+								<option value="high">High</option>
+							</select>
+						</div>
+
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Add Task</button>
+							<button type="reset" class="btn btn-muted">Clear</button>
+						</div>
+					</div>
+				</form>
+			</section>
+
+			<section class="panel panel-controls" aria-labelledby="controls-heading">
+				<h2 id="controls-heading" class="sr-only">Tasks controls</h2>
+				<div class="controls">
+					<input class="control-search" type="search" placeholder="Search tasks" aria-label="Search tasks" />
+					<div class="filters" role="toolbar" aria-label="Filter tasks">
+						<button class="filter active" data-filter="all">All</button>
+						<button class="filter" data-filter="active">Active</button>
+						<button class="filter" data-filter="completed">Completed</button>
+					</div>
+					<div class="sort">
+						<label for="sort-select" class="sr-only">Sort</label>
+						<select id="sort-select">
+							<option value="newest">Newest</option>
+							<option value="oldest">Oldest</option>
+							<option value="due">Due date</option>
+							<option value="priority">Priority</option>
+						</select>
+					</div>
+				</div>
+			</section>
+
+			<section class="panel panel-list" aria-labelledby="tasks-heading">
+				<h2 id="tasks-heading">Tasks</h2>
+				<p class="list-meta">You have <strong class="count">0</strong> tasks</p>
+
+				<ul class="task-list" aria-live="polite">
+					<!-- Example task items. These show the intended structure; functionality will be added via JavaScript later. -->
+					<li class="task-item">
+						<label class="task-main">
+							<input type="checkbox" aria-label="Mark task completed" />
+							<div class="task-body">
+								<div class="task-title">Design sign-up flow</div>
+								<div class="task-meta">Due: <time datetime="2026-02-20">Feb 20, 2026</time> • <span class="badge priority-medium">Medium</span></div>
+								<div class="task-desc">Create wireframes and collect stakeholder feedback.</div>
+							</div>
+						</label>
+						<div class="task-actions">
+							<button class="btn btn-icon" title="Edit">✎</button>
+							<button class="btn btn-icon danger" title="Delete">🗑</button>
+						</div>
+					</li>
+
+					<li class="task-item completed">
+						<label class="task-main">
+							<input type="checkbox" checked aria-label="Mark task completed" />
+							<div class="task-body">
+								<div class="task-title">Publish blog post</div>
+								<div class="task-meta">Completed • <span class="badge priority-low">Low</span></div>
+								<div class="task-desc">Proofread and publish the January wrap-up post.</div>
+							</div>
+						</label>
+						<div class="task-actions">
+							<button class="btn btn-icon" title="Reopen">↺</button>
+							<button class="btn btn-icon danger" title="Delete">🗑</button>
+						</div>
+					</li>
+				</ul>
+
+				<p class="empty-state" hidden>No tasks yet — add your first task using the form above.</p>
+			</section>
+		</main>
+	</body>
+</html>
