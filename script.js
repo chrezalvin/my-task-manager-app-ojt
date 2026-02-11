@@ -38,6 +38,7 @@
   const emptyState = qs('.empty-state');
   const searchInput = getById('searchInput');
   const filtersRoot = getById('taskFilter') || qs('.filters');
+  const themeToggleBtn = getById('nightDayToggle');
 
   let currentFilter = 'all';
   let searchTerm = '';
@@ -300,6 +301,29 @@
   // Initialize
   await load();
   render();
+
+  // Theme handling
+  const THEME_KEY = 'taskManager.theme.v1';
+  function applyTheme(theme) {
+    if (theme === 'light') document.body.classList.add('light');
+    else document.body.classList.remove('light');
+    if (themeToggleBtn) themeToggleBtn.textContent = theme === 'light' ? 'Dark Mode' : 'Night Mode';
+  }
+
+  // Restore saved theme
+  try {
+    const t = localStorage.getItem(THEME_KEY);
+    applyTheme(t === 'light' ? 'light' : 'dark');
+  } catch (e) { /* ignore */ }
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const isLight = document.body.classList.toggle('light');
+      const newTheme = isLight ? 'light' : 'dark';
+      try { localStorage.setItem(THEME_KEY, newTheme); } catch (e) {}
+      applyTheme(newTheme);
+    });
+  }
 
   // Expose a tiny API for debugging
   window.TaskManager = {
