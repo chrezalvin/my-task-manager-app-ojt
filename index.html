@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>My Task Manager</title>
 		<link rel="stylesheet" href="styles.css" />
+        <script src="script.js" defer></script>
 	</head>
 	<body>
 		<header class="app-header">
@@ -30,8 +31,8 @@
 
 					<div class="form-grid">
 						<div class="form-actions">
-							<button type="submit" class="btn btn-primary">Add Task</button>
-							<button type="reset" class="btn btn-muted">Clear</button>
+							<button type="submit" class="btn btn-primary" id="#submitTask">Add Task</button>
+							<button type="reset" class="btn btn-muted" id="#resetTask">Clear</button>
 						</div>
 					</div>
 				</form>
@@ -53,9 +54,9 @@
 				<h2 id="tasks-heading">Tasks</h2>
 				<p class="list-meta">You have <strong class="count">0</strong> tasks</p>
 
-				<ul class="task-list" aria-live="polite">
+				<ul class="task-list" aria-live="polite" id="#taskList">
 					<!-- Example task items. These show the intended structure; functionality will be added via JavaScript later. -->
-					<li class="task-item">
+					<li class="task-item" id="#item0">
 						<label class="task-main">
 							<input type="checkbox" aria-label="Mark task completed" />
 							<div class="task-body">
@@ -68,7 +69,7 @@
 						</div>
 					</li>
 
-					<li class="task-item completed">
+					<li class="task-item completed" id="#item1">
 						<label class="task-main">
 							<input type="checkbox" checked aria-label="Mark task completed" />
 							<div class="task-body">
