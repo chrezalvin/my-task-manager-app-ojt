@@ -24,11 +24,6 @@
 						<input id="title" name="title" type="text" placeholder="e.g. Finish monthly report" required />
 					</div>
 
-					<div class="form-row">
-						<label for="description">Description</label>
-						<textarea id="description" name="description" rows="2" placeholder="Add details (optional)"></textarea>
-					</div>
-
 					<div class="form-grid">
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary" id="#submitTask">Add Task</button>
@@ -41,8 +36,14 @@
 			<section class="panel panel-controls" aria-labelledby="controls-heading">
 				<h2 id="controls-heading" class="sr-only">Tasks controls</h2>
 				<div class="controls">
-					<input class="control-search" type="search" placeholder="Search tasks" aria-label="Search tasks" />
-					<div class="filters" role="toolbar" aria-label="Filter tasks">
+					<input 
+                        class="control-search" 
+                        type="search" 
+                        placeholder="Search tasks" 
+                        aria-label="Search tasks" 
+                        id="#searchInput"
+                    />
+					<div class="filters" role="toolbar" aria-label="Filter tasks" id="#taskFilter">
 						<button class="filter active" data-filter="all">All</button>
 						<button class="filter" data-filter="incomplete">Incomplete</button>
 						<button class="filter" data-filter="completed">Completed</button>

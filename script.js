@@ -20,9 +20,13 @@
   // Safely get text from input by id (ignores malformed ids with #)
   const getById = (id) => {
     if (!id) return null;
-    // If id starts with '#', trim it
-    let use = id.startsWith('#') ? id.slice(1) : id;
-    return document.getElementById(use) || document.querySelector(`[id="${id}"]`);
+    // prefer id without leading '#'
+    const plain = id.startsWith('#') ? id.slice(1) : id;
+    // try common lookups: id without '#', attribute match, or id with literal '#'
+    return document.getElementById(plain)
+      || document.querySelector(`[id="${plain}"]`)
+      || document.querySelector(`[id="#${plain}"]`)
+      || document.querySelector(`#${CSS.escape(plain)}`);
   };
 
   // Elements (prefer class selectors to avoid depending on weird ids)
@@ -32,6 +36,11 @@
   const listRoot = qs('.task-list');
   const countEl = qs('.count');
   const emptyState = qs('.empty-state');
+  const searchInput = getById('searchInput');
+  const filtersRoot = getById('taskFilter') || qs('.filters');
+
+  let currentFilter = 'all';
+  let searchTerm = '';
 
   if (!form || !inputTitle || !listRoot) {
     console.warn('Task Manager: required DOM elements not found. Aborting script.');
@@ -126,13 +135,23 @@
     // clear
     listRoot.innerHTML = '';
 
-    if (!tasks.length) {
+    // apply search + filter
+    const filtered = tasks.filter(task => {
+      if (currentFilter === 'completed' && !task.completed) return false;
+      if (currentFilter === 'incomplete' && task.completed) return false;
+      if (searchTerm) {
+        return task.title.toLowerCase().includes(searchTerm);
+      }
+      return true;
+    });
+
+    if (!filtered.length) {
       emptyState?.removeAttribute('hidden');
     } else {
       emptyState?.setAttribute('hidden', '');
     }
 
-    tasks.forEach(task => {
+    filtered.forEach(task => {
       const li = el('li', { class: `task-item${task.completed ? ' completed' : ''}` });
       li.setAttribute('data-id', task.id);
 
@@ -165,8 +184,8 @@
       listRoot.appendChild(li);
     });
 
-    // update count
-    if (countEl) countEl.textContent = String(tasks.length);
+  // update count (show visible count)
+  if (countEl) countEl.textContent = String(filtered.length);
   }
 
   // Operations
@@ -253,6 +272,30 @@
     const id = li.getAttribute('data-id');
     toggleComplete(id, cb.checked);
   });
+
+  // Search input
+  if (searchInput) {
+    // handle IDs that accidentally include leading '#'
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = String(e.target.value || '').toLowerCase().trim();
+      render();
+    });
+  }
+
+  // Filter buttons (delegated)
+  if (filtersRoot) {
+    filtersRoot.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-filter]');
+      if (!btn) return;
+      const f = btn.getAttribute('data-filter');
+      if (!f) return;
+      currentFilter = f;
+      // update active class
+      const all = Array.from(filtersRoot.querySelectorAll('button'));
+      all.forEach(b => b.classList.toggle('active', b === btn));
+      render();
+    });
+  }
 
   // Initialize
   await load();
